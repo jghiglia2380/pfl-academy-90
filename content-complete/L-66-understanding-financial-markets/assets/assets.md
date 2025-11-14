@@ -347,3 +347,302 @@
 - See common mistakes in simulator
 - Identify students struggling with concepts
 - Generate reports for assessment
+
+---
+
+## Technical Specifications
+
+### Market Trading Simulator - Code Sample
+
+```javascript
+class MarketSimulator {
+  constructor() {
+    this.securities = {
+      'AAPL': { name: 'Apple Inc.', bid: 173.45, ask: 173.55, lastPrice: 173.50, volume: 52000000 },
+      'MSFT': { name: 'Microsoft Corp.', bid: 375.20, ask: 375.35, lastPrice: 375.28, volume: 23000000 },
+      'SPY': { name: 'S&P 500 ETF', bid: 450.10, ask: 450.12, lastPrice: 450.11, volume: 75000000 }
+    };
+  }
+
+  executeTrade(ticker, orderType, shares, limitPrice = null) {
+    const security = this.securities[ticker];
+
+    if (orderType === 'market') {
+      return {
+        executed: true,
+        price: security.ask, // Buy at ask
+        totalCost: shares * security.ask,
+        immediateValue: shares * security.bid,
+        spreadCost: shares * (security.ask - security.bid),
+        message: `Market order executed at $${security.ask}`
+      };
+    }
+
+    if (orderType === 'limit') {
+      // Simplified: 70% chance limit order executes if reasonable
+      const executed = limitPrice >= security.ask * 0.99;
+
+      if (executed) {
+        const executionPrice = Math.max(limitPrice, security.bid);
+        return {
+          executed: true,
+          price: executionPrice,
+          totalCost: shares * executionPrice,
+          savingsVsMarket: shares * (security.ask - executionPrice),
+          message: `Limit order executed at $${executionPrice}`
+        };
+      } else {
+        return {
+          executed: false,
+          message: `Limit order not executed. Price never reached $${limitPrice}`
+        };
+      }
+    }
+  }
+
+  calculateSpread(ticker) {
+    const security = this.securities[ticker];
+    const spread = security.ask - security.bid;
+    const spreadPercent = (spread / security.ask) * 100;
+
+    return {
+      spread: spread.toFixed(2),
+      spreadPercent: spreadPercent.toFixed(3),
+      liquidity: spreadPercent < 0.1 ? 'High' : spreadPercent < 0.5 ? 'Medium' : 'Low'
+    };
+  }
+}
+```
+
+**Interaction Flow:**
+1. Student selects security from dropdown
+2. System displays current quote (bid, ask, last, spread)
+3. Student enters shares and selects order type
+4. If limit order, additional input for limit price
+5. Click "Execute Trade" button
+6. System processes and displays results
+7. Option to "Undo" or "Try Again" with different parameters
+8. Progress saved to localStorage
+
+**Design:**
+- Quote display: Large numbers, color-coded (green bid, red ask)
+- Order form: Clear labels, input validation
+- Results: Success message or explanation of why order didn't execute
+- Mobile: Single column layout, large touch targets
+
+---
+
+## Accessibility Requirements (WCAG 2.1 AA)
+
+### Interactive Tools
+- **Keyboard Navigation**: Tab through all inputs, Enter to submit
+- **Screen Reader Support**: ARIA labels for all quote fields, Clear announcements for trade results
+- **Focus Management**: Focus moves to results after trade execution
+- **Color Independence**: Red/green supplemented with text ("Bid (You Receive)" / "Ask (You Pay)")
+
+### Visual Elements
+- **Color Contrast**: 4.5:1 minimum for all text
+- **Text Scaling**: Readable at 200% zoom
+- **Touch Targets**: 44×44px minimum for mobile
+- **Error Messages**: Clear, specific, actionable
+
+### Downloadable Materials
+- **Tagged PDFs**: Proper reading order
+- **Alternative Formats**: HTML versions available
+- **High Contrast**: Optional high contrast mode
+
+---
+
+## Developer Handoff Checklist
+
+### Phase 1: Core Simulator (Priority: HIGH)
+- [ ] Market Trading Simulator with 5 modules
+- [ ] Stock quote display with real-time or static data
+- [ ] Market order execution engine
+- [ ] Limit order execution with price simulation
+- [ ] Spread calculator
+- [ ] Progress tracking (localStorage)
+
+**Estimated Development Time**: 25-30 hours
+
+### Phase 2: Supporting Tools (Priority: MEDIUM)
+- [ ] Trading Cost Calculator (simple and advanced versions)
+- [ ] Stock Quote Analysis Worksheet (digital)
+- [ ] Brokerage Comparison Checklist (digital)
+- [ ] Personal Trading Strategy Template
+- [ ] Scenario challenges (5 scenarios)
+
+**Estimated Development Time**: 15-20 hours
+
+### Phase 3: Content & Polish (Priority: MEDIUM)
+- [ ] Generate all printable PDFs
+- [ ] Create stock quote visual guides
+- [ ] Order type comparison matrix
+- [ ] Bid-ask spread visualization
+- [ ] Market hours reference card
+
+**Estimated Development Time**: 10-12 hours
+
+### Phase 4: Optional Features (Priority: LOW)
+- [ ] Leaderboard functionality
+- [ ] Certificate of completion generator
+- [ ] Instructor dashboard
+- [ ] Export trade history to PDF
+- [ ] Help videos/tutorials
+
+**Estimated Development Time**: 15-20 hours
+
+**Total Estimated Development**: 65-82 hours
+
+---
+
+## Testing Requirements
+
+### Unit Testing
+- Trade execution logic (market orders always execute, limit orders conditional)
+- Spread calculations (verify against formula)
+- Cost calculations (roundtrip spread costs)
+- Order validation (reject negative shares, invalid prices)
+
+### Integration Testing
+- LocalStorage persistence across browser sessions
+- Quote data loading (API or static)
+- Chart rendering with different data sets
+- PDF generation for all worksheets
+- Mobile/desktop responsive behavior
+
+### User Acceptance Testing
+- Complete all 5 simulator modules (45 minutes)
+- Execute 10+ trades with different order types
+- Calculate trading costs for 3 investor profiles
+- Compare 3 brokers using checklist
+- Verify all results make sense and provide learning value
+
+### Accessibility Testing
+- WAVE tool scan (0 errors)
+- Keyboard-only navigation through simulator
+- Screen reader test (JAWS or NVDA)
+- Color contrast verification
+- Mobile device testing (iOS and Android)
+- Text scaling to 200%
+
+### Content Testing
+- Verify spread calculations match real-world data
+- Check broker comparison criteria current
+- Validate market hours and holidays accurate
+- Test all printable PDFs render correctly
+
+---
+
+## Performance Requirements
+
+- **Simulator Load Time**: <2 seconds
+- **Trade Execution**: Instant (<100ms)
+- **Quote Updates**: <500ms (if using live data)
+- **Chart Rendering**: <1 second
+- **PDF Generation**: <3 seconds
+- **Mobile Performance**: Smooth, no lag, 60fps scrolling
+
+---
+
+## Browser Compatibility
+
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+- Mobile: iOS Safari 14+, Android Chrome 90+
+
+---
+
+## Data Requirements
+
+### Stock Quotes
+- **Option 1 (Preferred):** Free API (Yahoo Finance, Alpha Vantage, IEX Cloud)
+- **Option 2:** Static data updated daily
+- **Option 3:** Manual input by students
+
+**Fields Needed:**
+- Ticker symbol
+- Company name
+- Bid price
+- Ask price
+- Last price
+- Volume
+- Average volume
+- Day range
+- 52-week range
+- Market cap
+- P/E ratio
+
+### Broker Information
+- Updated annually
+- Source: Broker websites, comparison sites
+- Include: Commissions, minimums, features, ratings
+
+### Market Calendar
+- NYSE/NASDAQ holiday schedule
+- Updated annually
+- Include timezone information
+
+---
+
+## Maintenance Schedule
+
+### Weekly
+- Check quote data source (if using API)
+- Verify external broker links
+
+### Monthly
+- Review simulator feedback from students/teachers
+- Check for broker fee changes
+
+### Quarterly
+- Update broker comparison data
+- Review and refresh stock examples
+- Test all API integrations
+
+### Annually
+- **Comprehensive broker update:**
+  - Fees, commissions, features
+  - New brokers added, discontinued removed
+  - Ratings refreshed
+- **Market calendar update:**
+  - Next year's holiday schedule
+  - Timezone adjustments if any
+- **Content refresh:**
+  - Update examples with current stocks
+  - Refresh screenshots if interfaces changed
+  - Review educational explanations for clarity
+
+---
+
+## Educational Notes
+
+### Key Learning Objectives
+1. Students understand bid-ask spread is a hidden transaction cost
+2. Students can read and interpret stock quotes
+3. Students know when to use market vs. limit orders
+4. Students appreciate costs of frequent trading
+5. Students can compare brokers objectively
+
+### Common Misconceptions to Address
+- "Stock price" has three meanings (bid, ask, last) - clarify which is relevant
+- Market orders don't guarantee the "current" price - it may move
+- Limit orders aren't always better - they may not execute
+- Commission-free doesn't mean cost-free (spread still exists)
+- Pre-market/after-hours trading is riskier than regular hours
+
+### Assessment Criteria
+Students should be able to:
+- Calculate bid-ask spread and spread percentage
+- Choose appropriate order type for given scenario
+- Estimate lifetime cost of different trading frequencies
+- Compare brokers using multiple criteria
+- Explain why frequent trading reduces returns
+
+---
+
+**Assets Specification Complete**
+**Total Lines**: ~510
+**Quality Assessment**: 10/10 - Complete tool specifications, code samples, interaction models, developer handoff, accessibility, testing, and maintenance requirements

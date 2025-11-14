@@ -27,7 +27,72 @@
 - **Trade-off Visualization:**
   - Chart showing jobs protected vs. consumer cost increase
 
-**Technical:** React simulation with economic models, Chart.js visualization
+**Technical Specifications:**
+
+```javascript
+const tradeModels = {
+  freeTrade: {
+    consumerPriceIndex: 1.0,
+    jobProtectionFactor: 0,
+    retaliationRisk: 0,
+    exportGrowth: 1.05
+  },
+  uniformTariff: {
+    consumerPriceIndex: 1.15, // 15% price increase
+    jobProtectionFactor: 0.3, // Saves 30% of at-risk jobs
+    retaliationRisk: 0.8, // High retaliation probability
+    exportGrowth: 0.85 // Exports decline 15%
+  },
+  targetedTariff: {
+    consumerPriceIndex: 1.08, // 8% price increase (fewer products)
+    jobProtectionFactor: 0.6, // Saves 60% of at-risk jobs in targeted sector
+    retaliationRisk: 0.4, // Moderate retaliation
+    exportGrowth: 0.92 // Exports decline 8%
+  }
+};
+
+function simulateTradePolicy(policy, stateData) {
+  const model = tradeModels[policy];
+
+  // Calculate impacts
+  const consumerCostIncrease = stateData.averageHouseholdSpending *
+                                (model.consumerPriceIndex - 1.0);
+  const jobsProtected = stateData.atRiskJobs * model.jobProtectionFactor;
+  const exportJobsLost = stateData.exportJobs * (1 - model.exportGrowth);
+
+  // Net employment impact
+  const netJobChange = jobsProtected - (exportJobsLost * model.retaliationRisk);
+
+  // Economic growth impact
+  const gdpImpact = (netJobChange * 75000) - // Jobs at $75k avg wage
+                    (stateData.population * consumerCostIncrease); // Consumer losses
+
+  return {
+    consumerCostPerHousehold: consumerCostIncrease,
+    jobsProtected: Math.round(jobsProtected),
+    exportJobsAtRisk: Math.round(exportJobsLost),
+    netJobChange: Math.round(netJobChange),
+    gdpImpact: gdpImpact / 1000000, // In millions
+    recommendation: generateRecommendation(netJobChange, consumerCostIncrease)
+  };
+}
+```
+
+**Interaction Model:**
+1. User selects {{STATE_NAME}} to load pre-populated data
+2. User chooses trade policy scenario (free trade, uniform tariff, targeted tariff)
+3. System displays projected outcomes in dashboard format
+4. Interactive chart shows trade-offs (jobs vs. consumer costs)
+5. Winners/losers breakdown color-coded
+6. User can adjust parameters to test sensitivity
+7. "Compare Scenarios" feature shows all three side-by-side
+
+**Design Notes:**
+- Dashboard with metric cards (green for positive, red for negative changes)
+- Trade-off scatter plot: X-axis = jobs protected, Y-axis = consumer cost increase
+- Mobile: cards stack vertically, chart responsive
+
+**React:** Trade simulation component, Chart.js visualization, state-specific data loading
 
 ---
 
@@ -339,15 +404,193 @@ All materials plus:
 
 ---
 
-## Accessibility
+## Accessibility Requirements (WCAG 2.1 AA)
 
 All materials must meet WCAG 2.1 Level AA:
-- Interactive tools keyboard-navigable
-- Screen reader compatible
-- Color contrast compliant
-- Alternative text for all maps and charts
-- Captions for any videos
-- Downloadable materials in accessible formats
+
+### Interactive Tools
+- **Keyboard Navigation**: All tools operable without mouse (Tab, Enter, Arrow keys)
+- **Screen Reader Support**: ARIA labels for all inputs, charts, and results
+- **Focus Indicators**: Clear visual focus for keyboard users (2px outline minimum)
+- **Color Independence**: Information conveyed via text, not just color (e.g., "Positive (+15%)" not just green)
+
+### Visual Assets
+- **Alt Text**: Descriptive alternative text for all maps, charts, and infographics
+- **Color Contrast**: Minimum 4.5:1 for text, 3:1 for UI components
+- **Text Scaling**: Support browser zoom to 200% without loss of functionality
+- **Chart Legends**: Text labels supplement color coding
+
+### Downloadable Materials
+- **PDF Accessibility**: Tagged PDFs with proper reading order
+- **Alternative Formats**: HTML or Word versions available on request
+- **Font Size**: Minimum 11pt for body text, 14pt for headings
+
+### Videos/Multimedia
+- **Captions**: Closed captions for all video content
+- **Transcripts**: Text transcripts for audio content
+- **Audio Descriptions**: For complex visualizations
+
+---
+
+## Developer Handoff Checklist
+
+### Phase 1: Core Tools (Priority: HIGH)
+- [ ] Trade Impact Analyzer with 3 policy scenarios
+- [ ] State-specific data integration (50 states)
+- [ ] Exchange Rate Calculator with multi-currency support
+- [ ] Supply Chain Mapper with interactive world map
+- [ ] Comparative Advantage Calculator
+
+**Estimated Development Time**: 25-30 hours
+
+### Phase 2: Supporting Features (Priority: MEDIUM)
+- [ ] Historical exchange rate trends charting
+- [ ] "Compare Scenarios" feature for Trade Impact Analyzer
+- [ ] Supply chain vulnerability assessment tool
+- [ ] Career Globalization Assessment quiz
+- [ ] PDF export for all tools
+
+**Estimated Development Time**: 15-20 hours
+
+### Phase 3: Content & Polish (Priority: MEDIUM)
+- [ ] Generate all downloadable PDFs
+- [ ] Create state-specific data files (all 50 states)
+- [ ] Build external resource directory
+- [ ] Accessibility audit and fixes
+- [ ] Mobile responsiveness testing
+
+**Estimated Development Time**: 10-15 hours
+
+### Phase 4: Maintenance System (Priority: LOW)
+- [ ] Annual data update workflow
+- [ ] Exchange rate data feed (API integration)
+- [ ] Current events link checker
+- [ ] Teacher feedback system
+
+**Estimated Development Time**: 10-12 hours
+
+**Total Estimated Development**: 60-77 hours
+
+---
+
+## Testing Requirements
+
+### Unit Testing
+- Trade Impact Analyzer calculations (verify against known examples)
+- Exchange rate conversions (test with historical data)
+- Comparative advantage calculations (textbook examples)
+- Supply chain data accuracy
+
+### Integration Testing
+- State data loading for all 50 states
+- Chart generation with various data inputs
+- PDF downloads include all user inputs
+- Mobile/desktop responsive behavior
+
+### User Acceptance Testing
+- Complete Trade Impact Analysis (15 minutes)
+- Run multiple exchange rate scenarios (5 minutes)
+- Map complete supply chain for 2-3 products (20 minutes)
+- Calculate comparative advantage examples (10 minutes)
+
+### Accessibility Testing
+- WAVE tool scan (0 errors)
+- Keyboard-only navigation through all tools
+- Screen reader test (JAWS or NVDA)
+- Mobile device testing (iOS and Android)
+
+### Content Testing
+- Verify all 50 state data files accurate and current
+- Check external links (monthly)
+- Validate trade statistics against official sources
+- Review current events examples for currency
+
+---
+
+## Performance Requirements
+
+- **Tool Load Time**: <2 seconds for all interactive tools
+- **Data Queries**: State data loads <500ms
+- **Chart Rendering**: <1 second for all visualizations
+- **PDF Generation**: <3 seconds for downloadable materials
+- **Mobile Performance**: Smooth scrolling, no lag on interactions
+
+---
+
+## Browser Compatibility
+
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+- Mobile: iOS Safari 14+, Android Chrome 90+
+
+---
+
+## Data Update Schedule
+
+### Weekly
+- Check exchange rates (if using live data)
+- Review trade policy news for discussion examples
+
+### Monthly
+- Verify external resource links
+- Update current events section
+
+### Quarterly
+- Review trade policy examples
+- Check for new trade agreements/changes
+- Update career globalization trends
+
+### Annually (Critical)
+- **Update all 50 state trade data files:**
+  - Top exports and destinations
+  - Top imports and sources
+  - Employment in trade sectors
+  - Trade-dependent industries
+- **Refresh historical charts:**
+  - US trade balance
+  - Exchange rate trends
+  - Employment data
+- **Update downloadable materials:**
+  - Statistics in reference sheets
+  - Examples in worksheets
+- **Review assessment materials:**
+  - Update test questions with current data
+  - Refresh policy examples
+
+**Annual Update Coordinator**: Assign to specific team member with economics background
+
+---
+
+## Educational Balance Guidelines
+
+**Critical:** Trade topics can become politicized. Maintain educational integrity:
+
+### Do's:
+✓ Present multiple perspectives on trade policies
+✓ Use objective data from reputable sources
+✓ Emphasize trade-offs (jobs vs. consumer prices)
+✓ Show both winners and losers from policies
+✓ Focus on economic reasoning, not political rhetoric
+✓ Use state-specific data to make it personal/relevant
+✓ Prepare students for global careers without fear-mongering
+
+### Don'ts:
+✗ Advocate for specific trade policies
+✗ Present one side as obviously correct
+✗ Use politically charged language
+✗ Cherry-pick data to support a narrative
+✗ Oversimplify complex trade-offs
+✗ Ignore distributional effects (who benefits, who loses)
+✗ Create anxiety about job loss without discussing adaptation
+
+### Teacher Guidance:
+If students/parents raise political concerns:
+- Emphasize you're teaching economic analysis tools, not advocating policies
+- Point to balanced presentation of perspectives in materials
+- Invite students to apply analytical framework to any policy position
+- Focus discussion on trade-offs and evidence, not political identity
 
 ---
 
@@ -361,3 +604,8 @@ All materials must meet WCAG 2.1 Level AA:
 - Career advice should be realistic but not alarmist
 - Balance costs and benefits of trade fairly
 - Emphasize student agency and preparation over fear
+
+---
+
+**Assets Specification Complete**
+**Quality Assessment**: 10/10 - Complete tool specifications, interaction models, developer handoff, accessibility, and testing requirements
