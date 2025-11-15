@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{STATE_NAME}} Auto Finance Cost Reference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #ffffff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .state-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #6366f1;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .cost-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .cost-label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .cost-value {
+            font-size: 1.2rem;
+            color: #6366f1;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .info-box {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            margin-top: 15px;
+        }
+
+        .info-box p {
+            color: #1e40af;
+            font-size: 0.95rem;
+        }
+
+        .age-brackets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .age-bracket {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .age-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .age-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .resources-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .resources-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .resources-list li:last-child {
+            border-bottom: none;
+        }
+
+        .resource-name {
+            font-weight: 600;
+            color: #374151;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .resource-link {
+            color: #6366f1;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #f59e0b;
+            margin-top: 30px;
+        }
+
+        .warning-box h3 {
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+
+        .warning-box p {
+            color: #78350f;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+            color: #6b7280;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+            .section {
+                break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cost-grid {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            .cost-value {
+                text-align: left;
+            }
+
+            .age-brackets {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Auto Finance Cost Reference</h1>
+            <div class="state-badge">{{STATE_NAME}} ({{STATE_CODE}})</div>
+        </header>
+
+        <div class="section">
+            <div class="section-title">💰 State Taxes & Fees</div>
+            <div class="cost-grid">
+                <div class="cost-label">Vehicle Sales Tax Rate:</div>
+                <div class="cost-value">{{STATE_SALES_TAX}}%</div>
+
+                <div class="cost-label">Title & Initial Registration:</div>
+                <div class="cost-value">${{STATE_REGISTRATION_INITIAL}}</div>
+
+                <div class="cost-label">Annual Registration Renewal:</div>
+                <div class="cost-value">${{STATE_REGISTRATION_ANNUAL}}</div>
+            </div>
+
+            <div class="info-box">
+                <p><strong>Example:</strong> On a $25,000 vehicle in {{STATE_NAME}}, you'll pay approximately ${{CALC:25000*STATE_SALES_TAX/100}} in sales tax, plus ${{STATE_REGISTRATION_INITIAL}} for title and registration.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🛡️ Insurance Costs</div>
+            <div class="age-brackets">
+                <div class="age-bracket">
+                    <div class="age-label">Ages 16-19 (Average)</div>
+                    <div class="age-value">${{STATE_INSURANCE_AVG_TEEN}}/mo</div>
+                </div>
+                <div class="age-bracket">
+                    <div class="age-label">Ages 20-25</div>
+                    <div class="age-value">${{CALC:STATE_INSURANCE_AVG_TEEN*0.7}}/mo</div>
+                </div>
+                <div class="age-bracket">
+                    <div class="age-label">Ages 26-35</div>
+                    <div class="age-value">${{CALC:STATE_INSURANCE_AVG_TEEN*0.5}}/mo</div>
+                </div>
+                <div class="age-bracket">
+                    <div class="age-label">Ages 36+</div>
+                    <div class="age-value">${{CALC:STATE_INSURANCE_AVG_TEEN*0.45}}/mo</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><strong>Note:</strong> These are state averages. Your actual rates depend on driving record, vehicle type, coverage levels, and location within {{STATE_NAME}}.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">⛽ Fuel Costs</div>
+            <div class="cost-grid">
+                <div class="cost-label">Current Average Gas Price ({{STATE_NAME}}):</div>
+                <div class="cost-value">${{STATE_GAS_PRICE_CURRENT}}/gal</div>
+
+                <div class="cost-label">Annual Fuel Cost (12,000 miles @ 30 MPG):</div>
+                <div class="cost-value">${{CALC:12000/30*STATE_GAS_PRICE_CURRENT}}</div>
+
+                <div class="cost-label">Monthly Fuel Cost:</div>
+                <div class="cost-value">${{CALC:12000/30*STATE_GAS_PRICE_CURRENT/12}}/mo</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">💳 Loan Interest Rates</div>
+            <div class="cost-grid">
+                <div class="cost-label">New Vehicle Average ({{STATE_NAME}}):</div>
+                <div class="cost-value">{{STATE_AVG_AUTO_LOAN_RATE_NEW}}% APR</div>
+
+                <div class="cost-label">Used Vehicle Average:</div>
+                <div class="cost-value">{{STATE_AVG_AUTO_LOAN_RATE_USED}}% APR</div>
+
+                <div class="cost-label">Excellent Credit (720+):</div>
+                <div class="cost-value">{{CALC:STATE_AVG_AUTO_LOAN_RATE_NEW-1.5}}% APR</div>
+
+                <div class="cost-label">Fair Credit (620-679):</div>
+                <div class="cost-value">{{CALC:STATE_AVG_AUTO_LOAN_RATE_NEW+3}}% APR</div>
+            </div>
+
+            <div class="info-box">
+                <p><strong>Impact:</strong> On a $25,000 loan over 60 months, a 1% difference in APR equals approximately $650 more in interest paid.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🔧 Inspection & Emissions</div>
+            {{#if STATE_INSPECTION_REQUIRED}}
+            <div class="cost-grid">
+                <div class="cost-label">Annual Inspection Required:</div>
+                <div class="cost-value">YES</div>
+
+                <div class="cost-label">Inspection Cost:</div>
+                <div class="cost-value">${{STATE_INSPECTION_COST}}/year</div>
+            </div>
+            {{else}}
+            <div class="info-box">
+                <p><strong>Good News:</strong> {{STATE_NAME}} does not require annual safety or emissions inspections for most vehicles.</p>
+            </div>
+            {{/if}}
+        </div>
+
+        <div class="section">
+            <div class="section-title">🔗 Helpful {{STATE_NAME}} Resources</div>
+            <ul class="resources-list">
+                <li>
+                    <span class="resource-name">{{STATE_NAME}} DMV</span>
+                    <a href="{{STATE_DMV_URL}}" class="resource-link" target="_blank">{{STATE_DMV_URL}}</a>
+                </li>
+                <li>
+                    <span class="resource-name">Insurance Comparison Tool</span>
+                    <a href="{{STATE_INSURANCE_COMPARISON_URL}}" class="resource-link" target="_blank">{{STATE_INSURANCE_COMPARISON_URL}}</a>
+                </li>
+                <li>
+                    <span class="resource-name">Consumer Protection (Attorney General)</span>
+                    <a href="{{STATE_CONSUMER_PROTECTION_URL}}" class="resource-link" target="_blank">{{STATE_CONSUMER_PROTECTION_URL}}</a>
+                </li>
+                <li>
+                    <span class="resource-name">Consumer Financial Protection Bureau</span>
+                    <a href="https://www.consumerfinance.gov/consumer-tools/auto-loans/" class="resource-link" target="_blank">consumerfinance.gov/auto-loans</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="warning-box">
+            <h3>⚠️ Data Currency Notice</h3>
+            <p>Gas prices, insurance rates, and interest rates change frequently. Use this reference sheet as a starting point, but verify current rates when making actual purchase decisions. Tax rates and fees are accurate as of publication but may change with new legislation.</p>
+        </div>
+
+        <footer>
+            <p><strong>PFL Academy</strong> | Auto Finance Education</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">This reference sheet is customized for {{STATE_NAME}} residents. Always verify current rates and regulations.</p>
+        </footer>
+    </div>
+</body>
+</html>

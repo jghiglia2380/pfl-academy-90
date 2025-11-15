@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Finance Decision Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f3f4f6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .wizard-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 60%;
+            right: -40%;
+            height: 3px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+
+        .step.active:not(:last-child)::after {
+            background: #6366f1;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #6b7280;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step.active .step-number {
+            background: #6366f1;
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: #10b981;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .step.active .step-label {
+            color: #6366f1;
+            font-weight: 600;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        .results-container {
+            display: none;
+        }
+
+        .results-container.active {
+            display: block;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .scenario-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .scenario-header {
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .buy-new .scenario-header {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .buy-used .scenario-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .lease .scenario-header {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        }
+
+        .scenario-body {
+            padding: 20px;
+        }
+
+        .result-metric {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .result-metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .winner-badge {
+            background: #10b981;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .actions button {
+            flex: 1;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            color: #6b7280;
+        }
+
+        @media print {
+            .wizard-container,
+            .button-group,
+            .actions {
+                display: none;
+            }
+            .results-container {
+                display: block !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-indicator {
+                flex-wrap: wrap;
+            }
+
+            .step {
+                flex-basis: 50%;
+                margin-bottom: 20px;
+            }
+
+            .step:nth-child(2)::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚗 Auto Finance Decision Calculator</h1>
+            <p class="subtitle">Compare Buy New, Buy Used, and Lease Scenarios</p>
+        </header>
+
+        <div class="wizard-container">
+            <div class="step-indicator">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Vehicle Info</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Buy New</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Buy Used</div>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Lease</div>
+                </div>
+                <div class="step" data-step="5">
+                    <div class="step-number">5</div>
+                    <div class="step-label">Ownership Costs</div>
+                </div>
+                <div class="step" data-step="6">
+                    <div class="step-number">6</div>
+                    <div class="step-label">Results</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Vehicle Selection -->
+            <div class="step-content active" data-step="1">
+                <h2 style="margin-bottom: 20px; color: #1f2937;">Step 1: Vehicle Information</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="vehicleName">Vehicle Make/Model</label>
+                        <input type="text" id="vehicleName" placeholder="e.g., Honda Civic">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPrice">New Price ($)</label>
+                        <input type="number" id="newPrice" value="30000" min="5000" step="1000">
+                        <div class="help-text">MSRP for brand new vehicle</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="usedPrice">Used Price (3-year-old) ($)</label>
+                        <input type="number" id="usedPrice" value="20000" min="3000" step="1000">
+                        <div class="help-text">Typical price for 3-year-old used version</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="leasePayment">Lease Monthly Payment ($)</label>
+                        <input type="number" id="leasePayment" value="350" min="100" step="10">
+                        <div class="help-text">Advertised lease payment</div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-secondary" disabled>Previous</button>
+                    <button class="btn-primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Buy New Details -->
+            <div class="step-content" data-step="2">
+                <h2 style="margin-bottom: 20px; color: #1f2937;">Step 2: Buy New Financing Details</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="newDownPayment">Down Payment ($)</label>
+                        <input type="number" id="newDownPayment" value="3000" min="0" step="500">
+                    </div>
+                    <div class="form-group">
+                        <label for="newLoanTerm">Loan Term (months)</label>
+                        <select id="newLoanTerm">
+                            <option value="36">36 months (3 years)</option>
+                            <option value="48">48 months (4 years)</option>
+                            <option value="60" selected>60 months (5 years)</option>
+                            <option value="72">72 months (6 years)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="newInterestRate">Interest Rate (%)</label>
+                        <input type="number" id="newInterestRate" value="6.5" min="0" max="30" step="0.1">
+                        <div class="help-text">Current average: 6.5% for new cars</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="salesTax">Sales Tax Rate (%)</label>
+                        <input type="number" id="salesTax" value="{{STATE_SALES_TAX}}" min="0" max="15" step="0.1">
+                        <div class="help-text">{{STATE_NAME}} rate: {{STATE_SALES_TAX}}%</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="registrationInitial">Initial Registration Fee ($)</label>
+                        <input type="number" id="registrationInitial" value="{{STATE_REGISTRATION_INITIAL}}" min="0" step="10">
+                        <div class="help-text">{{STATE_NAME}}: ${{STATE_REGISTRATION_INITIAL}}</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="registrationAnnual">Annual Registration Fee ($)</label>
+                        <input type="number" id="registrationAnnual" value="{{STATE_REGISTRATION_ANNUAL}}" min="0" step="10">
+                        <div class="help-text">{{STATE_NAME}}: ${{STATE_REGISTRATION_ANNUAL}}</div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="prevStep()">Previous</button>
+                    <button class="btn-primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Buy Used Details -->
+            <div class="step-content" data-step="3">
+                <h2 style="margin-bottom: 20px; color: #1f2937;">Step 3: Buy Used Financing Details</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="usedDownPayment">Down Payment ($)</label>
+                        <input type="number" id="usedDownPayment" value="2000" min="0" step="500">
+                    </div>
+                    <div class="form-group">
+                        <label for="usedLoanTerm">Loan Term (months)</label>
+                        <select id="usedLoanTerm">
+                            <option value="24">24 months (2 years)</option>
+                            <option value="36">36 months (3 years)</option>
+                            <option value="48" selected>48 months (4 years)</option>
+                            <option value="60">60 months (5 years)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="usedInterestRate">Interest Rate (%)</label>
+                        <input type="number" id="usedInterestRate" value="7.5" min="0" max="30" step="0.1">
+                        <div class="help-text">Typically 1-2% higher than new</div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="prevStep()">Previous</button>
+                    <button class="btn-primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Lease Details -->
+            <div class="step-content" data-step="4">
+                <h2 style="margin-bottom: 20px; color: #1f2937;">Step 4: Leasing Details</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="leaseTerm">Lease Term (months)</label>
+                        <select id="leaseTerm">
+                            <option value="24">24 months (2 years)</option>
+                            <option value="36" selected>36 months (3 years)</option>
+                            <option value="39">39 months</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="leaseDownPayment">Cap Cost Reduction/Down Payment ($)</label>
+                        <input type="number" id="leaseDownPayment" value="2000" min="0" step="500">
+                    </div>
+                    <div class="form-group">
+                        <label for="leaseMileage">Annual Mileage Limit</label>
+                        <select id="leaseMileage">
+                            <option value="10000">10,000 miles/year</option>
+                            <option value="12000" selected>12,000 miles/year</option>
+                            <option value="15000">15,000 miles/year</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="leaseAcquisition">Acquisition Fee ($)</label>
+                        <input type="number" id="leaseAcquisition" value="{{STATE_LEASE_ACQUISITION_FEE}}" min="0" step="50">
+                        <div class="help-text">Typical: $500-$1000</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="leaseDisposition">Disposition Fee ($)</label>
+                        <input type="number" id="leaseDisposition" value="395" min="0" step="50">
+                        <div class="help-text">Fee when returning vehicle</div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="prevStep()">Previous</button>
+                    <button class="btn-primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Ownership Costs -->
+            <div class="step-content" data-step="5">
+                <h2 style="margin-bottom: 20px; color: #1f2937;">Step 5: Ownership Costs (All Scenarios)</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="insuranceMonthly">Monthly Insurance ($)</label>
+                        <input type="number" id="insuranceMonthly" value="{{STATE_INSURANCE_AVG_TEEN}}" min="50" step="10">
+                        <div class="help-text">{{STATE_NAME}} teen average: ${{STATE_INSURANCE_AVG_TEEN}}</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="annualMiles">Annual Miles Driven</label>
+                        <input type="number" id="annualMiles" value="12000" min="5000" step="1000">
+                    </div>
+                    <div class="form-group">
+                        <label for="mpg">Fuel Efficiency (MPG)</label>
+                        <input type="number" id="mpg" value="30" min="10" max="60" step="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="gasPrice">Gas Price ($/gallon)</label>
+                        <input type="number" id="gasPrice" value="{{STATE_GAS_PRICE_CURRENT}}" min="2" max="8" step="0.1">
+                        <div class="help-text">{{STATE_NAME}} current: ${{STATE_GAS_PRICE_CURRENT}}</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="maintenance">Annual Maintenance ($)</label>
+                        <input type="number" id="maintenance" value="800" min="200" step="100">
+                        <div class="help-text">Average: $600-$1200/year</div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-secondary" onclick="prevStep()">Previous</button>
+                    <button class="btn-primary" onclick="calculateResults()">Calculate Results</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-container" id="results">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #1f2937; font-size: 2rem;">📊 Your Comparison Results (6-Year Analysis)</h2>
+
+            <div class="comparison-grid">
+                <div class="scenario-card buy-new">
+                    <div class="scenario-header">BUY NEW</div>
+                    <div class="scenario-body">
+                        <div class="result-metric">
+                            <div class="metric-label">Monthly Payment</div>
+                            <div class="metric-value" id="newMonthly">$489</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="metric-label">Total Paid (6 years)</div>
+                            <div class="metric-value" id="newTotalPaid">$35,400</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="metric-label">Vehicle Value (6 years)</div>
+                            <div class="metric-value" id="newValue">$12,000</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="metric-label">NET COST</div>
+                            <div class="metric-value" style="color: #3b82f6;" id="newNetCost">$23,400</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="metric-label">Cost Per Mile</div>
+                            <div class="metric-value" id="newCPM">$0.32</div>
+                        </div>
+                        <div id="newWinner"></div>
+                    </div>
+                </div>
+
+                <div class="scenario-card buy-used">
+                    <div class="scenario-header">BUY USED</div>
+                    <div class="scenario-body">
+                        <div class="result-metric">
+                            <div class="metric-label">Monthly Payment</div>
+                            <div class="metric-value" id="usedMonthly">$407</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="metric-label">Total Paid (6 years)</div>
+                            <div class="metric-value" id="usedTotalPaid">$28,200</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="metric-label">Vehicle Value (6 years)</div>
+                            <div class="metric-value" id="usedValue">$8,000</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="metric-label">NET COST</div>
+                            <div class="metric-value" style="color: #10b981;" id="usedNetCost">$20,200</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="metric-label">Cost Per Mile</div>
+                            <div class="metric-value" id="usedCPM">$0.28</div>
+                        </div>
+                        <div id="usedWinner"></div>
+                    </div>
+                </div>
+
+                <div class="scenario-card lease">
+                    <div class="scenario-header">LEASE (2 cycles)</div>
+                    <div class="scenario-body">
+                        <div class="result-metric">
+                            <div class="metric-label">Monthly Payment</div>
+                            <div class="metric-value" id="leaseMonthly">$350</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="metric-label">Total Paid (6 years)</div>
+                            <div class="metric-value" id="leaseTotalPaid">$30,400</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="metric-label">Vehicle Value (6 years)</div>
+                            <div class="metric-value" id="leaseValue">$0</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="metric-label">NET COST</div>
+                            <div class="metric-value" style="color: #f97316;" id="leaseNetCost">$30,400</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="metric-label">Cost Per Mile</div>
+                            <div class="metric-value" id="leaseCPM">$0.42</div>
+                        </div>
+                        <div id="leaseWinner"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn-secondary" onclick="window.print()">📄 Print Results</button>
+                <button class="btn-secondary" onclick="saveResults()">💾 Save Scenario</button>
+                <button class="btn-primary" onclick="resetCalculator()">🔄 Start Over</button>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>PFL Academy</strong> | Auto Finance Education</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Results are estimates based on your inputs. Actual costs may vary. Consult with financial professionals for personalized advice.</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        function nextStep() {
+            if (currentStep < 5) {
+                document.querySelector(`.step-content[data-step="${currentStep}"]`).classList.remove('active');
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('completed');
+                currentStep++;
+                document.querySelector(`.step-content[data-step="${currentStep}"]`).classList.add('active');
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('active');
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                document.querySelector(`.step-content[data-step="${currentStep}"]`).classList.remove('active');
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+                currentStep--;
+                document.querySelector(`.step-content[data-step="${currentStep}"]`).classList.add('active');
+                document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('completed');
+            }
+        }
+
+        function calculateResults() {
+            // Get all input values
+            const newPrice = parseFloat(document.getElementById('newPrice').value);
+            const usedPrice = parseFloat(document.getElementById('usedPrice').value);
+            const leasePayment = parseFloat(document.getElementById('leasePayment').value);
+
+            const newDownPayment = parseFloat(document.getElementById('newDownPayment').value);
+            const newLoanTerm = parseInt(document.getElementById('newLoanTerm').value);
+            const newInterestRate = parseFloat(document.getElementById('newInterestRate').value) / 100;
+
+            const usedDownPayment = parseFloat(document.getElementById('usedDownPayment').value);
+            const usedLoanTerm = parseInt(document.getElementById('usedLoanTerm').value);
+            const usedInterestRate = parseFloat(document.getElementById('usedInterestRate').value) / 100;
+
+            const salesTax = parseFloat(document.getElementById('salesTax').value) / 100;
+            const regInitial = parseFloat(document.getElementById('registrationInitial').value);
+            const regAnnual = parseFloat(document.getElementById('registrationAnnual').value);
+
+            const leaseTerm = parseInt(document.getElementById('leaseTerm').value);
+            const leaseDownPayment = parseFloat(document.getElementById('leaseDownPayment').value);
+            const leaseAcquisition = parseFloat(document.getElementById('leaseAcquisition').value);
+            const leaseDisposition = parseFloat(document.getElementById('leaseDisposition').value);
+
+            const insurance = parseFloat(document.getElementById('insuranceMonthly').value);
+            const annualMiles = parseFloat(document.getElementById('annualMiles').value);
+            const mpg = parseFloat(document.getElementById('mpg').value);
+            const gasPrice = parseFloat(document.getElementById('gasPrice').value);
+            const maintenance = parseFloat(document.getElementById('maintenance').value);
+
+            // Calculate monthly costs
+            const monthlyGas = (annualMiles / 12 / mpg) * gasPrice;
+            const monthlyMaintenance = maintenance / 12;
+            const monthlyReg = regAnnual / 12;
+
+            // Buy New Calculations
+            const newLoanAmount = (newPrice * (1 + salesTax)) + regInitial - newDownPayment;
+            const newMonthlyPayment = calculateMonthlyPayment(newLoanAmount, newInterestRate, newLoanTerm);
+            const newTotalPayments = (newMonthlyPayment * newLoanTerm) + newDownPayment;
+            const newTotalCosts = newTotalPayments + (insurance * 72) + (monthlyGas * 72) + (maintenance * 6) + (regAnnual * 6);
+            const newValue6Year = newPrice * 0.40; // 40% of original value
+            const newNetCost = newTotalCosts - newValue6Year;
+            const newCPM = newNetCost / (annualMiles * 6);
+
+            // Buy Used Calculations
+            const usedLoanAmount = (usedPrice * (1 + salesTax)) + regInitial - usedDownPayment;
+            const usedMonthlyPayment = calculateMonthlyPayment(usedLoanAmount, usedInterestRate, usedLoanTerm);
+            const usedTotalPayments = (usedMonthlyPayment * usedLoanTerm) + usedDownPayment;
+            const usedTotalCosts = usedTotalPayments + (insurance * 72) + (monthlyGas * 72) + (maintenance * 6) + (regAnnual * 6);
+            const usedValue6Year = usedPrice * 0.40;
+            const usedNetCost = usedTotalCosts - usedValue6Year;
+            const usedCPM = usedNetCost / (annualMiles * 6);
+
+            // Lease Calculations (2 cycles for 6 years)
+            const leaseMonths = 72; // 6 years
+            const leaseTotalPayments = (leasePayment * leaseMonths) + (leaseDownPayment * 2);
+            const leaseTotalFees = leaseAcquisition + (leaseDisposition * 2);
+            const leaseTotalCosts = leaseTotalPayments + leaseTotalFees + (insurance * 72) + (monthlyGas * 72) + (regAnnual * 6);
+            const leaseValue = 0;
+            const leaseNetCost = leaseTotalCosts;
+            const leaseCPM = leaseNetCost / (annualMiles * 6);
+
+            // Update UI
+            document.getElementById('newMonthly').textContent = '$' + newMonthlyPayment.toFixed(0);
+            document.getElementById('newTotalPaid').textContent = '$' + newTotalCosts.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('newValue').textContent = '$' + newValue6Year.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('newNetCost').textContent = '$' + newNetCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('newCPM').textContent = '$' + newCPM.toFixed(2);
+
+            document.getElementById('usedMonthly').textContent = '$' + usedMonthlyPayment.toFixed(0);
+            document.getElementById('usedTotalPaid').textContent = '$' + usedTotalCosts.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('usedValue').textContent = '$' + usedValue6Year.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('usedNetCost').textContent = '$' + usedNetCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('usedCPM').textContent = '$' + usedCPM.toFixed(2);
+
+            document.getElementById('leaseMonthly').textContent = '$' + leasePayment.toFixed(0);
+            document.getElementById('leaseTotalPaid').textContent = '$' + leaseTotalCosts.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('leaseValue').textContent = '$0';
+            document.getElementById('leaseNetCost').textContent = '$' + leaseNetCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('leaseCPM').textContent = '$' + leaseCPM.toFixed(2);
+
+            // Determine winner
+            const costs = [
+                { name: 'newWinner', cost: newNetCost },
+                { name: 'usedWinner', cost: usedNetCost },
+                { name: 'leaseWinner', cost: leaseNetCost }
+            ];
+            const winner = costs.reduce((min, item) => item.cost < min.cost ? item : min);
+
+            document.getElementById('newWinner').innerHTML = '';
+            document.getElementById('usedWinner').innerHTML = '';
+            document.getElementById('leaseWinner').innerHTML = '';
+            document.getElementById(winner.name).innerHTML = '<div class="winner-badge">✓ LOWEST NET COST</div>';
+
+            // Show results
+            document.querySelector('.wizard-container').style.display = 'none';
+            document.getElementById('results').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function calculateMonthlyPayment(principal, annualRate, months) {
+            const monthlyRate = annualRate / 12;
+            if (monthlyRate === 0) return principal / months;
+            return principal * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
+        }
+
+        function saveResults() {
+            const data = {
+                newNetCost: document.getElementById('newNetCost').textContent,
+                usedNetCost: document.getElementById('usedNetCost').textContent,
+                leaseNetCost: document.getElementById('leaseNetCost').textContent
+            };
+            localStorage.setItem('autoFinanceResults', JSON.stringify(data));
+            alert('Results saved! You can reference them later.');
+        }
+
+        function resetCalculator() {
+            document.getElementById('results').classList.remove('active');
+            document.querySelector('.wizard-container').style.display = 'block';
+            currentStep = 1;
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active', 'completed');
+            });
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelector('.step[data-step="1"]').classList.add('active');
+            document.querySelector('.step-content[data-step="1"]').classList.add('active');
+        }
+    </script>
+</body>
+</html>

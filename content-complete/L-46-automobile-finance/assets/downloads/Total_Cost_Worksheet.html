@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Cost of Ownership Worksheet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #ffffff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border-radius: 12px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .page {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            page-break-after: always;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: #6366f1;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #e5e7eb;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            font-size: 1.3rem;
+            color: #374151;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 4px solid #6366f1;
+        }
+
+        .worksheet-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .worksheet-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .worksheet-row.total {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            font-weight: bold;
+        }
+
+        .worksheet-row.final {
+            background: #d1fae5;
+            border: 2px solid #10b981;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .row-label {
+            color: #374151;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+            text-align: right;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .readonly-field {
+            background: #e5e7eb;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: right;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .calculation-note {
+            background: #f0f9ff;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 3px solid #3b82f6;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #1e40af;
+        }
+
+        .state-info-box {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .state-info-box p {
+            color: #92400e;
+            margin-bottom: 5px;
+        }
+
+        .state-info-box strong {
+            color: #78350f;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #6b7280;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+
+            .page {
+                box-shadow: none;
+                page-break-after: always;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .worksheet-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .page {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="no-print">
+            <h1>Total Cost of Ownership Worksheet</h1>
+            <p class="subtitle">Calculate the Complete 6-Year Cost of Vehicle Ownership</p>
+        </header>
+
+        <!-- Page 1: Purchase & Financing Costs -->
+        <div class="page">
+            <div class="page-title">Page 1: Purchase & Financing Costs</div>
+
+            <div class="section">
+                <div class="section-header">Vehicle Purchase</div>
+                <div class="worksheet-grid">
+                    <div class="worksheet-row">
+                        <div class="row-label">Vehicle Price:</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                    <div class="worksheet-row">
+                        <div class="row-label">Down Payment:</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                    <div class="worksheet-row total">
+                        <div class="row-label">Loan Amount Needed:</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Loan Details</div>
+                <div class="worksheet-grid">
+                    <div class="worksheet-row">
+                        <div class="row-label">Interest Rate:</div>
+                        <input type="text" class="input-field" placeholder="_____%">
+                    </div>
+                    <div class="worksheet-row">
+                        <div class="row-label">Loan Term (months):</div>
+                        <input type="text" class="input-field" placeholder="____ months">
+                    </div>
+                    <div class="worksheet-row">
+                        <div class="row-label">Monthly Payment:</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                    <div class="worksheet-row">
+                        <div class="row-label">Total Paid During Loan:</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                    <div class="worksheet-row total">
+                        <div class="row-label">Total Interest Paid:</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                </div>
+                <div class="calculation-note">
+                    💡 Total Interest = (Monthly Payment × Loan Term) - Loan Amount
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">State & Initial Costs ({{STATE_NAME}})</div>
+
+                <div class="state-info-box">
+                    <p><strong>{{STATE_NAME}} Reference:</strong></p>
+                    <p>Sales Tax Rate: {{STATE_SALES_TAX}}%</p>
+                    <p>Registration/Title: ${{STATE_REGISTRATION_INITIAL}}</p>
+                    {{#if STATE_INSPECTION_REQUIRED}}
+                    <p>Inspection: ${{STATE_INSPECTION_COST}} (if required)</p>
+                    {{/if}}
+                </div>
+
+                <div class="worksheet-grid">
+                    <div class="worksheet-row">
+                        <div class="row-label">Sales Tax ({{STATE_SALES_TAX}}% of price):</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                    <div class="worksheet-row">
+                        <div class="row-label">Registration/Title:</div>
+                        <input type="text" class="input-field" value="${{STATE_REGISTRATION_INITIAL}}" style="background: #f3f4f6;">
+                    </div>
+                    {{#if STATE_INSPECTION_REQUIRED}}
+                    <div class="worksheet-row">
+                        <div class="row-label">Initial Inspection:</div>
+                        <input type="text" class="input-field" value="${{STATE_INSPECTION_COST}}" style="background: #f3f4f6;">
+                    </div>
+                    {{/if}}
+                    <div class="worksheet-row total">
+                        <div class="row-label">Total State & Initial Costs:</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Annual Ongoing Costs -->
+        <div class="page">
+            <div class="page-title">Page 2: Ongoing Costs (Years 1-6)</div>
+
+            <div class="section">
+                <div class="section-header">Annual Recurring Costs</div>
+                <div class="worksheet-grid">
+                    <div class="worksheet-row">
+                        <div class="row-label">Registration Renewal (per year):</div>
+                        <input type="text" class="input-field" value="${{STATE_REGISTRATION_ANNUAL}}" style="background: #f3f4f6;">
+                    </div>
+                    <div class="worksheet-row total">
+                        <div class="row-label">Registration × 6 years:</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Insurance (6 Years)</div>
+                <div class="worksheet-grid">
+                    <div class="worksheet-row">
+                        <div class="row-label">Monthly Insurance Cost:</div>
+                        <input type="text" class="input-field" placeholder="$_______/mo">
+                    </div>
+                    <div class="worksheet-row total">
+                        <div class="row-label">Insurance × 72 months:</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                </div>
+                <div class="calculation-note">
+                    💡 Total Insurance = Monthly Cost × 72 months
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Fuel Costs (6 Years)</div>
+                <div class="worksheet-grid">
+                    <div class="worksheet-row">
+                        <div class="row-label">Monthly Fuel Cost:</div>
+                        <input type="text" class="input-field" placeholder="$_______/mo">
+                    </div>
+                    <div class="worksheet-row total">
+                        <div class="row-label">Fuel × 72 months:</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                </div>
+                <div class="calculation-note">
+                    💡 Calculate: (Annual Miles ÷ MPG) × Gas Price ÷ 12 = Monthly Fuel Cost
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Maintenance & Repairs (6 Years)</div>
+                <div class="worksheet-grid">
+                    <div class="worksheet-row">
+                        <div class="row-label">Annual Maintenance:</div>
+                        <input type="text" class="input-field" placeholder="$_______/year">
+                    </div>
+                    <div class="worksheet-row">
+                        <div class="row-label">Estimated Major Repairs:</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                    <div class="worksheet-row total">
+                        <div class="row-label">Total Maintenance (6 years):</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                </div>
+                <div class="calculation-note">
+                    💡 Include oil changes, tire rotations, brake pads, tires, etc.
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">📊 Final Calculation</div>
+                <div class="worksheet-grid">
+                    <div class="worksheet-row">
+                        <div class="row-label">Total Costs (sum of all above):</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                    <div class="worksheet-row">
+                        <div class="row-label">Estimated Vehicle Value (Year 6):</div>
+                        <input type="text" class="input-field" placeholder="$_______">
+                    </div>
+                    <div class="worksheet-row final">
+                        <div class="row-label">NET COST OF OWNERSHIP:</div>
+                        <input type="text" class="input-field" placeholder="$_______" style="font-size: 1.2rem; font-weight: bold;">
+                    </div>
+                </div>
+                <div class="calculation-note">
+                    💡 Net Cost = Total Costs - Remaining Vehicle Value
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Cost Per Mile</div>
+                <div class="worksheet-grid">
+                    <div class="worksheet-row">
+                        <div class="row-label">Total Miles Driven (6 years):</div>
+                        <input type="text" class="input-field" placeholder="_______ miles">
+                    </div>
+                    <div class="worksheet-row final">
+                        <div class="row-label">COST PER MILE:</div>
+                        <input type="text" class="input-field" placeholder="$_______/mile">
+                    </div>
+                </div>
+                <div class="calculation-note">
+                    💡 Cost Per Mile = Net Cost ÷ Total Miles Driven
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>PFL Academy</strong> | Auto Finance Education</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Use this worksheet to understand the COMPLETE cost of vehicle ownership, not just the monthly payment.</p>
+        </footer>
+    </div>
+</body>
+</html>

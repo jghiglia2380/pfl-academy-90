@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Term Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #ffffff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #6366f1;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #6366f1;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
+        .loan-info {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .loan-info p {
+            font-size: 1.1rem;
+            color: #374151;
+        }
+
+        .loan-info strong {
+            color: #6366f1;
+            font-size: 1.3rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .term-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .term-header {
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .term-36 .term-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .term-60 .term-header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .term-72 .term-header {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .term-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .term-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .term-body {
+            padding: 20px;
+        }
+
+        .metric {
+            margin-bottom: 20px;
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .bar-visual {
+            margin: 30px 0;
+        }
+
+        .bar-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 300px;
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .bar-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 10px;
+        }
+
+        .bar {
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            color: white;
+            font-weight: bold;
+        }
+
+        .principal-section {
+            background: #3b82f6;
+            border-radius: 8px 8px 0 0;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .interest-section {
+            background: #ef4444;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .bar-label {
+            margin-top: 10px;
+            font-weight: 600;
+            text-align: center;
+            color: #1f2937;
+        }
+
+        .insight-box {
+            background: #fee2e2;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #ef4444;
+            text-align: center;
+        }
+
+        .insight-box h3 {
+            color: #991b1b;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .insight-box p {
+            color: #7f1d1d;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+            color: #6b7280;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bar-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Loan Term Comparison</h1>
+            <p class="subtitle">How Loan Length Affects Total Interest Paid</p>
+        </header>
+
+        <div class="loan-info">
+            <p>Example: <strong>$25,000</strong> vehicle at <strong>6.5% APR</strong></p>
+        </div>
+
+        <div class="comparison-grid">
+            <div class="term-card term-36">
+                <div class="term-header">
+                    <div class="term-title">36 Months</div>
+                    <div class="term-subtitle">3 Years</div>
+                </div>
+                <div class="term-body">
+                    <div class="metric">
+                        <div class="metric-label">Monthly Payment</div>
+                        <div class="metric-value">$767</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Total Paid</div>
+                        <div class="metric-value">$27,624</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Interest Paid</div>
+                        <div class="metric-value" style="color: #10b981;">$2,624</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="term-card term-60">
+                <div class="term-header">
+                    <div class="term-title">60 Months</div>
+                    <div class="term-subtitle">5 Years</div>
+                </div>
+                <div class="term-body">
+                    <div class="metric">
+                        <div class="metric-label">Monthly Payment</div>
+                        <div class="metric-value">$489</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Total Paid</div>
+                        <div class="metric-value">$29,340</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Interest Paid</div>
+                        <div class="metric-value" style="color: #f59e0b;">$4,340</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="term-card term-72">
+                <div class="term-header">
+                    <div class="term-title">72 Months</div>
+                    <div class="term-subtitle">6 Years</div>
+                </div>
+                <div class="term-body">
+                    <div class="metric">
+                        <div class="metric-label">Monthly Payment</div>
+                        <div class="metric-value">$414</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Total Paid</div>
+                        <div class="metric-value">$29,808</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Interest Paid</div>
+                        <div class="metric-value" style="color: #ef4444;">$4,808</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bar-visual">
+            <h3 style="text-align: center; margin-bottom: 20px; color: #1f2937;">Total Cost Breakdown</h3>
+            <div class="bar-container">
+                <div class="bar-wrapper">
+                    <div class="bar" style="height: 100%;">
+                        <div class="principal-section" style="flex: 25000;">
+                            Principal<br>$25,000
+                        </div>
+                        <div class="interest-section" style="flex: 2624;">
+                            Interest<br>$2,624
+                        </div>
+                    </div>
+                    <div class="bar-label">36 Months<br>$27,624 Total</div>
+                </div>
+
+                <div class="bar-wrapper">
+                    <div class="bar" style="height: 106.2%;">
+                        <div class="principal-section" style="flex: 25000;">
+                            Principal<br>$25,000
+                        </div>
+                        <div class="interest-section" style="flex: 4340;">
+                            Interest<br>$4,340
+                        </div>
+                    </div>
+                    <div class="bar-label">60 Months<br>$29,340 Total</div>
+                </div>
+
+                <div class="bar-wrapper">
+                    <div class="bar" style="height: 107.9%;">
+                        <div class="principal-section" style="flex: 25000;">
+                            Principal<br>$25,000
+                        </div>
+                        <div class="interest-section" style="flex: 4808;">
+                            Interest<br>$4,808
+                        </div>
+                    </div>
+                    <div class="bar-label">72 Months<br>$29,808 Total</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="insight-box">
+            <h3>⚠️ The 72-Month Loan Costs $4,500 MORE in Interest!</h3>
+            <p>You'll pay nearly DOUBLE the interest compared to a 36-month loan</p>
+        </div>
+
+        <footer>
+            <p><strong>PFL Academy</strong> | Auto Finance Education</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Lower monthly payments might seem attractive, but longer loans cost significantly more over time and keep you "underwater" (owing more than the car is worth) for years.</p>
+        </footer>
+    </div>
+</body>
+</html>
