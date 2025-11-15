@@ -1,198 +1,120 @@
-# 11.3 ASSETS AND INSTRUCTIONS
+# Asset Specifications for L-3: Income and Taxes
 
-## Day 2 Learning Lab UI/UX Design Instructions for Bolt.new
+**Scope:** 4 interactive/printable HTML assets for a 55-minute class
+**Pattern:** Matches L-1 through L-45 Oklahoma scope (3-5 files per chapter)
 
-### Overall Learning Lab Structure
+## Asset List (4 files total)
 
-**Purpose:** Create an interactive digital workspace for students to apply insurance cost management concepts through practical scenarios and decision-making activities.
+### 1. Paycheck Analyzer Calculator (PRIMARY INTERACTIVE TOOL)
+**File:** `Paycheck_Analyzer_Calculator.html`
+**Purpose:** Interactive tool to understand gross vs. net income with state-specific deductions
+**Use:** Chapter interactive activity (15-20 minutes)
+**Type:** Interactive web application
 
-**Design Elements:**
+**Features:**
+- Profession selector (5-6 common entry-level jobs) or custom salary input
+- State-specific tax calculations:
+  - Federal income tax (basic bracket calculation)
+  - State income tax: `{{STATE_INCOME_TAX_RATE}}`%
+  - FICA (Social Security 6.2%, Medicare 1.45%)
+  - Optional: State SDI/disability where applicable
+- Adjustable W-4 withholding (0-3 allowances)
+- Visual breakdown showing:
+  - Gross income bar
+  - Each deduction as segment
+  - Net (take-home) highlighted
+- Side-by-side comparison (2 scenarios)
+- Printable results
 
-- Clean, professional interface with financial theme
-- Progress tracker showing completion of each section
-- Auto-saving functionality for student work
-- Responsive design for use on various devices
+---
 
-### Asset 1: Key Concepts Review Podcast Player
+### 2. W-4 Withholding Simulator
+**File:** `W4_Withholding_Simulator.html`
+**Purpose:** Practice completing W-4 form and seeing impact on take-home pay
+**Use:** Chapter worksheet (10-12 minutes)
+**Type:** Interactive + printable worksheet
 
-**Purpose:** Provide an audio review of Day 1 concepts for auditory learners and reinforce key terminology.
+**Features:**
+- Simplified W-4 form (2020+ version)
+- 3 scenarios with different situations:
+  - Single job, no dependents
+  - Married, spouse works
+  - Single with one child
+- Real-time calculation showing:
+  - Weekly/biweekly take-home pay
+  - Estimated annual tax owed
+  - Estimated refund or balance due
+- State-specific withholding considerations for `{{STATE_NAME}}`
+- Explanation of when to adjust W-4
 
-**Inputs:** Pre-recorded podcast content
+---
 
-**Expected Outputs:** Student engagement with review content
+### 3. Income Management Worksheet
+**File:** `Income_Management_Worksheet.html`
+**Purpose:** Comprehensive worksheet for planning net income usage
+**Use:** Chapter reflection activity (8-10 minutes)
+**Type:** Printable worksheet with calculation fields
 
-**Interaction Model:**
+**Sections:**
+- Gross Income Calculation (hourly × hours or annual salary)
+- Deductions Breakdown (using `{{STATE_NAME}}` tax rates)
+- Net Income Summary
+- 50/30/20 Budget Allocation
+- Monthly Savings Goals
+- Tax Planning Considerations
+- Personal Action Plan
 
-- Audio player with play/pause, speed adjustment, and progress bar
-- Optional transcript toggle for accessibility
-- 3-5 recall questions after listening to check understanding
+---
 
-**Integration Needs:** None
+### 4. State Tax Reference Sheet
+**File:** `State_Tax_Reference_Sheet.html`
+**Purpose:** Quick reference for `{{STATE_NAME}}` income tax structure
+**Use:** Reference material
+**Type:** Printable 1-page reference
 
-### Asset 2: Insurance Scenario Analysis Tool
+**Content for `{{STATE_NAME}}`:**
+- State income tax structure: `{{#if STATE_INCOME_TAX_RATE}}{{STATE_INCOME_TAX_RATE}}% flat rate{{else}}{{#if STATE_INCOME_TAX_BRACKETS}}Progressive brackets{{else}}No state income tax{{/if}}{{/if}}`
+- Federal tax brackets (simplified)
+- FICA breakdown (Social Security + Medicare)
+- Standard deduction amounts
+- Common pre-tax deductions (401k, HSA, etc.)
+- State-specific considerations:
+  - Local income taxes (if applicable): `{{STATE_LOCAL_INCOME_TAX}}`
+  - State disability insurance: `{{STATE_SDI_RATE}}`
+- Quick calculation examples
+- Links to `{{STATE_NAME}}` Department of Revenue
 
-**Purpose:** Allow students to analyze realistic insurance scenarios and make recommendations.
+---
 
-**Inputs:** Student knowledge from Day 1, scenario descriptions
+## State Variables Used Across All Assets
 
-**Expected Outputs:** Written analysis and justification for insurance recommendations
+- `STATE_NAME`
+- `STATE_CODE`
+- `STATE_INCOME_TAX_RATE` (or `STATE_INCOME_TAX_BRACKETS` for progressive states)
+- `STATE_LOCAL_INCOME_TAX` (if applicable)
+- `STATE_SDI_RATE` (State Disability Insurance, where applicable)
+- `STATE_TAX_FILING_PORTAL_URL`
+- `STATE_REVENUE_DEPT_URL`
 
-**Interaction Model:**
+## 55-Minute Class Flow
 
-- Interactive scenario cards with expandable details
-- Drop-down selection for recommendations
-- Text input fields for justification
-- Guided analysis prompts
+**Chapter Resource Usage Suggestions:**
+- 0-5 min: Distribute State Tax Reference Sheet
+- 5-25 min: Direct instruction on gross vs. net income, deductions, W-4 basics
+- 25-45 min: Paycheck Analyzer Calculator (interactive activity - pairs)
+- 45-55 min: Debrief and wrap-up
 
-**Integration Needs:** May import student reflections from Day 1 to inform their thinking
+**Additional Activities:**
+- 0-10 min: Review and setup
+- 10-25 min: W-4 Withholding Simulator (individual)
+- 25-40 min: Income Management Worksheet (reflection)
+- 40-55 min: Discussion and wrap-up
 
-### Asset 3: Insurance Plan Comparison Calculator
+## Implementation Notes
 
-**Purpose:** Enable students to compare multiple insurance plans and visualize cost differences.
-
-**Inputs:** Insurance plan details (premiums, deductibles, co-insurance rates)
-
-**Expected Outputs:** Cost analysis under different usage scenarios, recommended plan selection
-
-**Interaction Model:**
-
-- Data entry fields for plan details
-- Interactive sliders for different usage scenarios
-- Automatic calculations showing out-of-pocket costs
-- Visual comparison charts
-- Save/export functionality
-
-**Integration Needs:** None
-
-### Asset 4: Personal Insurance Strategy Builder
-
-**Purpose:** Guide students in creating a personalized approach to insurance decisions.
-
-**Inputs:** Student reflections from Day 1, previous activity results
-
-**Expected Outputs:** Documented personal insurance strategy with rationale
-
-**Interaction Model:**
-
-- Guided form with decision points
-- Risk tolerance assessment slider
-- Financial situation summary
-- Insurance needs checklist
-- Text fields for strategy justification
-
-**Integration Needs:** Import student responses from Day 1 Skill Builder reflection
-
-### Asset 5: Portfolio Integration Module
-
-**Purpose:** Capture student work from the Learning Lab for their ongoing personal finance portfolio.
-
-**Inputs:** All completed activities from the Learning Lab
-
-**Expected Outputs:** Compiled portfolio section on insurance decisions
-
-**Interaction Model:**
-
-- Review screen showing all completed work
-- Edit functionality for final revisions
-- Submit button to finalize portfolio section
-- Success confirmation and portfolio preview
-
-**Integration Needs:** Gather all student inputs from previous activities
-
-### Technical Requirements
-
-- Ensure smooth transition between activities
-- Provide clear navigation with "next" and "back" buttons
-- Include help/hint functionality for students who need additional support
-- Enable teacher view to monitor student progress
-- Allow for data export for assessment purposes
-- Include accessibility features (screen reader compatibility, keyboard navigation)
-
-## Content from spec.md
-
-# Chapter 1.3: Income and Taxes - Asset Specifications
-
-## Required Assets for Day 1
-
-### Visual Resources
-1. **Gross vs. Net Income Flow Chart**
-   - Purpose: Visualize how gross income is reduced by various deductions
-   - Format: Flow chart graphic (PNG/SVG)
-   - Notes: Use color coding to distinguish mandatory vs. optional deductions
-
-2. **Sample Pay Stub Breakdown**
-   - Purpose: Teach students how to read and understand a pay stub
-   - Format: Annotated pay stub image (PNG)
-   - Notes: Include callouts explaining each section and calculation
-
-3. **Tax Withholding Visualization**
-   - Purpose: Show the relationship between W-4 choices and take-home pay
-   - Format: Interactive graphic (SVG/JavaScript)
-   - Notes: Demonstrate how changing allowances affects withholding amounts
-
-### Interactive Tools
-1. **W-4 Simulation Skill Builder**
-   - Purpose: Practice completing a W-4 form with different scenarios
-   - Format: Interactive form simulation
-   - Notes: Include scenario descriptions, form fields, and feedback on choices
-
-2. **Take-Home Pay Calculator**
-   - Purpose: Calculate net pay based on salary and deduction inputs
-   - Format: Interactive calculator
-   - Notes: Include federal and state taxes, FICA, and customizable deductions
-
-## Required Assets for Day 2
-
-### Audio Resources
-1. **Income and Taxes Podcast**
-   - Purpose: Review taxation concepts from Day 1
-   - Format: MP3 audio file (5-7 minutes)
-   - Notes: Explain progressive taxation, mandatory deductions, and income management
-
-### Interactive Tools
-1. **Paycheck Analyzer**
-   - Purpose: Analyze take-home pay for different professions
-   - Format: Interactive tool with profession selection
-   - Notes: Include adjustable tax withholding and deduction options
-
-2. **Tax Withholding Strategy Builder**
-   - Purpose: Develop optimal withholding strategies
-   - Format: Interactive planning tool
-   - Notes: Connect withholding choices to financial goals
-
-3. **Net Income Budget Challenge**
-   - Purpose: Practice budget allocation with after-tax income
-   - Format: Interactive budget simulation
-   - Notes: Include sliders for different spending/saving categories
-
-4. **Long-Term Impact Calculator**
-   - Purpose: Show how small increases in retirement contributions impact future savings
-   - Format: Interactive projection tool
-   - Notes: Visual graph showing growth over time with varying contribution levels
-
-## Downloadable Resources
-1. **Income Management Workbook**
-   - Purpose: Provide structure for income planning
-   - Format: PDF workbook
-   - Notes: Include monthly tracking pages, tax planning worksheets, and goal sheets
-
-2. **Tax Form Guide**
-   - Purpose: Explain common tax forms and their purpose
-   - Format: PDF guide
-   - Notes: Include W-2, W-4, 1040, and other common forms with explanations
-
-3. **Deduction Tracking Template**
-   - Purpose: Help track deductions for tax purposes
-   - Format: Spreadsheet template
-   - Notes: Categories for common deductions with calculation formulas
-
-## Additional Resources
-1. **Tax Resources**
-   - Purpose: Provide trusted tax information sources
-   - Format: Curated list with descriptions
-   - Notes: Include IRS resources, tax calculators, and educational materials
-
-2. **Income Growth Strategies**
-   - Purpose: Provide guidance on increasing income over time
-   - Format: PDF guide
-   - Notes: Include education, skill development, promotion strategies, and side income
+- All HTML files must be self-contained (no external CDN dependencies)
+- Print-friendly CSS required
+- File sizes under 500KB
+- Mobile-responsive design
+- Meets WCAG 2.1 AA accessibility standards
+- PFL Academy color scheme (indigo #6366f1, purple #8b5cf6)

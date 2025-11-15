@@ -1,247 +1,177 @@
-# Asset Specifications - Chapter 10.1: Renting vs. Owning
+# Asset Specifications for L-30: Renting vs. Owning a Home
 
-## DAY 1 SKILL BUILDER ASSETS
+**Scope:** 5 interactive/printable HTML assets for a 55-minute class
+**Pattern:** Matches L-1 through L-45 Oklahoma scope (3-5 files per chapter)
 
-### Housing Priorities Comparison Chart
+## Asset List (5 files total)
 
-**Purpose:** To help students evaluate different housing options based on their personal priorities
+### 1. Rent vs. Buy Calculator (PRIMARY INTERACTIVE TOOL)
+**File:** `Rent_vs_Buy_Calculator.html`
+**Purpose:** Interactive comparison tool for renting vs. buying financial analysis
+**Use:** Chapter interactive activity (15-20 minutes)
+**Type:** Interactive web application
 
-**Asset Type:** Interactive comparison chart
-
-**Specifications:**
-- Digital form with printable version
-- Chart with three housing options (renting apartment, leasing condo, buying house)
-- Fields for entering monthly payment, key advantages, key disadvantages
-- Section for listing personal priorities
-- Space for reflection on which option best aligns with priorities
-- Visual design should emphasize the comparison aspects
-- Tool should allow for saving progress or printing completed worksheet
-
-**Example Format:**
-
-| Housing Option | Monthly Payment | Key Advantage | Key Disadvantage | Alignment with My Priorities |
-|----------------|----------------|---------------|------------------|------------------------------|
-| Renting an Apartment |  |  |  |  |
-| Leasing a Condominium |  |  |  |  |
-| Buying a House |  |  |  |  |
-
-**Technical Requirements:**
-- Interactive digital format (editable PDF or web-based form)
-- Printable PDF version
-- Clear instructions embedded within the tool
-- Mobile-responsive design for access on various devices
-
-## DAY 2 LEARNING LAB ASSETS
-
-### Overall Learning Lab Design
-
-**Purpose:** Create an engaging interactive environment for exploring housing decisions
-
-**Design Elements:**
-- Housing theme with clean, modern visuals
-- Consistent color coding for rent vs. buy comparisons
-- Progress tracking bar showing completion of activities
-- Navigation system for moving between activities
-- Summary panel that compiles insights from all activities
-
-### Asset 1: Housing Costs Calculator
-
-**Purpose:** Allow students to compare the financial implications of renting vs. buying
-
-**Asset Type:** Interactive financial calculator
-
-**Specifications:**
-- Input fields for rental scenario:
-  - Monthly rent
-  - Expected annual rent increase percentage
-  - Security deposit amount
+**Features:**
+- Rental scenario inputs:
+  - Monthly rent (default: `${{STATE_MEDIAN_RENT}}`)
+  - Annual rent increase (default: 3%)
   - Renter's insurance
-  - Utilities not included in rent
-  - Lease term
-
-- Input fields for purchase scenario:
-  - Home purchase price
-  - Down payment percentage
-  - Mortgage interest rate
-  - Loan term (years)
-  - Property tax rate
+  - Security deposit
+- Purchase scenario inputs:
+  - Home price (default: `${{STATE_MEDIAN_HOME_PRICE}}`)
+  - Down payment % (5%, 10%, 20%)
+  - Mortgage rate (current market rate)
+  - Property tax rate (`{{STATE_PROPERTY_TAX_AVG}}`)
   - Homeowner's insurance
-  - HOA fees
-  - Expected maintenance costs
-  - Expected appreciation rate
+  - HOA fees (if applicable)
+  - Maintenance costs (1-2% of home value)
+- Time horizon selector (5, 10, 15 years)
+- Output calculations:
+  - Side-by-side monthly cost comparison
+  - 5/10/15-year total cost
+  - Equity building vs. rent payments
+  - Break-even point calculator
+- Visual charts showing cumulative costs over time
+- Printable comparison report
 
-- Output displays:
-  - Side-by-side comparison of monthly costs
-  - 5-year total cost calculation
-  - 10-year total cost calculation
-  - Break-even point calculation
-  - Equity building visualization
-  - Net worth impact graph
+---
 
-- Interactive features:
-  - Sliders for adjustable inputs
-  - Reset button for default values
-  - Option to save/print results
-  - "What if" scenario builder for testing variables
+### 2. Housing Affordability Worksheet
+**File:** `Housing_Affordability_Worksheet.html`
+**Purpose:** Calculate how much housing you can afford based on income
+**Use:** Chapter worksheet (10-12 minutes)
+**Type:** Interactive + printable worksheet
 
-**Technical Requirements:**
-- JavaScript-based calculator with precise formulas
-- Visual data representations (charts/graphs)
+**Sections:**
+- Gross monthly income input
+- Debt obligations (student loans, car payment, credit cards)
+- 28/36 Rule calculations:
+  - Max housing expense (28% of gross income)
+  - Max total debt (36% of gross income)
+- For renting:
+  - Maximum affordable rent
+  - With utilities estimate
+- For buying:
+  - Maximum mortgage payment
+  - Maximum home price (based on down payment %, rate, taxes)
+- State-specific context for `{{STATE_NAME}}`:
+  - Median rent: `${{STATE_MEDIAN_RENT}}`
+  - Median home price: `${{STATE_MEDIAN_HOME_PRICE}}`
+  - "Your target vs. market reality"
+
+---
+
+### 3. Total Cost of Homeownership Breakdown
+**File:** `Total_Cost_Homeownership_Breakdown.html`
+**Purpose:** Comprehensive list of all costs associated with homeownership
+**Use:** Chapter worksheet (8-10 minutes)
+**Type:** Interactive + printable reference
+
+**Categories:**
+- Upfront Costs:
+  - Down payment
+  - Closing costs (2-5% of home price)
+  - Inspection and appraisal
+  - Moving expenses
+- Monthly Costs:
+  - Mortgage principal + interest
+  - Property taxes (`{{STATE_PROPERTY_TAX_AVG}}`)
+  - Homeowner's insurance
+  - HOA fees (if applicable)
+  - Utilities (higher than renting)
+- Ongoing Costs:
+  - Maintenance and repairs (1-2% of home value annually)
+  - Landscaping/yard care
+  - Appliance replacement fund
+- State-specific considerations for `{{STATE_NAME}}`:
+  - Property tax calculation example
+  - Typical closing costs
+  - Common HOA fee ranges
+- Interactive calculator: Enter home price, see all costs estimated
+
+---
+
+### 4. Rent vs. Own Decision Matrix
+**File:** `Rent_vs_Own_Decision_Matrix.html`
+**Purpose:** Non-financial factors to consider in housing decision
+**Use:** Chapter reflection activity (8-10 minutes)
+**Type:** Printable worksheet
+
+**Factors to Rate (1-5 scale):**
+- Flexibility/Mobility (Do you plan to move soon?)
+- Job stability (How secure is your income?)
+- Lifestyle preferences (DIY projects vs. call landlord?)
+- Market conditions (`{{STATE_NAME}}` housing market: rising/falling?)
+- Family plans (Expanding household size?)
+- Maintenance willingness (Time and ability to handle repairs?)
+- Long-term roots (Plan to stay 5+ years?)
+- Financial readiness (Emergency fund, stable income, credit score?)
+
+**Scoring:**
+- Weighted scoring system
+- "Rent" vs. "Buy" recommendation based on answers
+- Explanation of why each factor matters
+- "My situation" summary with action steps
+
+---
+
+### 5. State Housing Market Reference Sheet
+**File:** `State_Housing_Market_Reference_Sheet.html`
+**Purpose:** Quick reference for `{{STATE_NAME}}` housing market data
+**Use:** Reference material
+**Type:** Printable 1-page reference
+
+**Content for `{{STATE_NAME}}`:**
+- Median home price: `${{STATE_MEDIAN_HOME_PRICE}}`
+- Median rent: `${{STATE_MEDIAN_RENT}}`/month
+- Price-to-rent ratio (comparison metric)
+- Property tax rate: `{{STATE_PROPERTY_TAX_AVG}}`
+- Typical closing costs in state
+- First-time homebuyer programs available
+- Average days on market
+- Housing market trend: ⬆️ Rising / ➡️ Stable / ⬇️ Declining
+- Rent control policies (if applicable)
+- Links to:
+  - `{{STATE_NAME}}` Housing Finance Agency
+  - Local realtor associations
+  - Rental market data sources
+- Comparison to national averages
+
+---
+
+## State Variables Used Across All Assets
+
+- `STATE_NAME`
+- `STATE_CODE`
+- `STATE_MEDIAN_HOME_PRICE`
+- `STATE_MEDIAN_RENT`
+- `STATE_PROPERTY_TAX_AVG`
+- `STATE_CLOSING_COSTS_AVG`
+- `STATE_HOUSING_MARKET_TREND` (rising/stable/declining)
+- `STATE_FIRST_TIME_BUYER_PROGRAMS`
+- `STATE_HOUSING_FINANCE_AGENCY_URL`
+- `STATE_RENT_CONTROL_INFO` (if applicable)
+
+## 55-Minute Class Flow
+
+**Chapter Resource Usage Suggestions:**
+- 0-5 min: Distribute State Housing Market Reference Sheet
+- 5-25 min: Direct instruction on renting vs. owning pros/cons, costs, market factors
+- 25-45 min: Rent vs. Buy Calculator (interactive activity - pairs)
+- 45-55 min: Debrief and wrap-up
+
+**Additional Activities:**
+- 0-10 min: Review and setup
+- 10-25 min: Housing Affordability Worksheet (individual)
+- 25-38 min: Total Cost of Homeownership review
+- 38-50 min: Rent vs. Own Decision Matrix (reflection)
+- 50-55 min: Discussion and wrap-up
+
+## Implementation Notes
+
+- All HTML files must be self-contained (no external CDN dependencies)
+- Print-friendly CSS required
+- File sizes under 500KB
 - Mobile-responsive design
-- Error checking for unrealistic inputs
-- Help tooltips explaining financial concepts
-
-### Asset 2: Housing Application Requirements Comparison Tool
-
-**Purpose:** Help students understand qualification requirements for renting vs. buying
-
-**Asset Type:** Interactive comparison tool with research capabilities
-
-**Specifications:**
-- Side-by-side comparison matrix for rental vs. mortgage applications
-- Pre-loaded information about typical requirements
-- Research links to authoritative sources
-- Editable fields for student input
-- Checklist template for financial preparation steps
-- Timeline visualizer for application processes
-
-**Technical Requirements:**
-- Tabbed interface for different requirement categories
-- Print/export functionality
-- Option to save progress
-- Mobile-responsive design
-
-### Asset 3: Housing Scenario Analysis Toolkit
-
-**Purpose:** Guide students through analyzing different life scenarios to determine optimal housing choices
-
-**Asset Type:** Interactive decision matrix with scenario profiles
-
-**Specifications:**
-- Three distinct scenario profiles with demographic information, financial details, and goals
-- Interactive decision matrix for each scenario with rating scales
-- Automated scoring system
-- Guidance prompts for factor consideration
-- Recommendation generator based on completed matrix
-- Discussion question prompts
-
-**Technical Requirements:**
-- Interactive 1-5 rating system
-- Automatic calculation of total scores
-- Visual representation of results
-- Ability to compare scenarios side by side
-- Save/print functionality
-
-### Asset 4: Personal Housing Plan Builder
-
-**Purpose:** Enable students to create comprehensive housing plans based on their circumstances
-
-**Asset Type:** Interactive planning tool with template sections
-
-**Specifications:**
-- Multi-section template including:
-  - Current housing profile inputs
-  - Goal-setting framework (short/medium/long-term)
-  - Action plan builder with timeline
-  - Challenge identification and solution development
-- Pre-populated examples for guidance
-- Resource links for each section
-- Reflection prompts throughout
-
-**Technical Requirements:**
-- Progress saving functionality
-- Export to PDF capability
-- Mobile-responsive design
-- Rich text editing for personal notes
-- Ability to revisit and revise
-
-### Asset 5: Housing Market Analysis Project Guide
-
-**Purpose:** Structure the portfolio project with clear guidelines and resources
-
-**Asset Type:** Project guide with research framework
-
-**Specifications:**
-- Step-by-step project instructions
-- Research guidance for housing market data
-- Templates for data collection
-- Analysis framework tools
-- Local market data resources
-- Evaluation rubric
-- Example of completed analysis
-
-**Technical Requirements:**
-- Downloadable templates
-- Links to reliable data sources
-- Structured format for final submission
-
-## SUPPLEMENTARY VISUAL ASSETS
-
-### Infographics and Visual Aids
-
-1. **Renting vs. Buying Decision Flowchart**
-   - Visual decision tree helping students navigate key decision factors
-   - Incorporates financial, lifestyle, and future planning considerations
-   - Printable as a reference guide
-
-2. **Housing Terms Visual Dictionary**
-   - Illustrated explanations of key housing terminology
-   - Visual representations of concepts like equity, amortization, etc.
-   - Available as classroom poster and digital reference
-
-3. **Housing Costs Breakdown Visualization**
-   - Comparative pie charts showing cost allocation for renting vs. buying
-   - Highlights "hidden costs" in both options
-   - Shows how costs change over time
-
-4. **Life Stage Housing Needs Timeline**
-   - Visual representation of how housing needs evolve through life stages
-   - Shows typical transitions between renting and owning
-   - Includes financial readiness milestones
-
-## DOWNLOADABLE RESOURCES
-
-1. **Housing Decision Workbook (PDF)**
-   - Comprehensive guide combining all activities
-   - Printable worksheets for in-class or homework use
-   - Reference materials and checklists
-
-2. **Local Housing Market Research Guide (PDF)**
-   - Instructions for researching local rental and purchase options
-   - Data collection templates
-   - Analysis frameworks
-   - Resource links
-
-3. **Housing Financial Terms Glossary (PDF)**
-   - Comprehensive definitions of housing financial terminology
-   - Examples and explanations in student-friendly language
-   - Quick-reference format
-
-4. **Sample Lease and Mortgage Documents (PDF)**
-   - Annotated examples of real housing documents
-   - Highlighted key sections and terms
-   - Explanation of legal requirements and consumer protections
-
-## TECHNICAL IMPLEMENTATION NOTES
-
-### Development Requirements
-
-- All interactive tools should be developed as web-based applications
-- Tools should function across devices (desktop, tablet, mobile)
-- User progress should be savable where appropriate
-- All calculators should use standardized financial formulas for accuracy
-- Content should be accessible according to WCAG 2.1 guidelines
-
-### Integration Points
-
-- Housing Costs Calculator should integrate with the Personal Housing Plan
-- Day 1 Skill Builder responses should be accessible during Day 2 activities
-- All tools should support export to PDF for inclusion in student portfolios
-- Tools should track completion status for teacher monitoring
-
-### Data Privacy Considerations
-
-- Student financial information entered in tools should not be permanently stored
-- Options for anonymous scenario-based completion should be available
-- Clear privacy notices should be included with all data collection
-- No personally identifiable information should be required for tool functionality
+- Meets WCAG 2.1 AA accessibility standards
+- PFL Academy color scheme (indigo #6366f1, purple #8b5cf6)

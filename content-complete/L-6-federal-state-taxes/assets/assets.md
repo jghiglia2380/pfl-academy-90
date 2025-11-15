@@ -1,102 +1,126 @@
-# Chapter 2.1: Understanding Federal and State Taxes - Asset Specifications
+# Asset Specifications for L-6: Understanding Federal and State Taxes
 
-## DAY 1 ASSETS
+**Scope:** 4 interactive/printable HTML assets for a 55-minute class
+**Pattern:** Matches L-1 through L-45 Oklahoma scope (3-5 files per chapter)
 
-### 1. TAX BRACKET CHART
+## Asset List (4 files total)
 
-**Purpose:** Visual reference for federal tax brackets to support understanding of progressive taxation
-**Format:** Digital infographic with current tax bracket information
-**Design Notes:** Use brand colors, include single and married filing jointly brackets, clearly show marginal rates
+### 1. Tax Impact Calculator (PRIMARY INTERACTIVE TOOL)
+**File:** `Tax_Impact_Calculator.html`
+**Purpose:** Interactive calculator comparing take-home pay across different states and tax scenarios
+**Use:** Chapter interactive activity (15-20 minutes)
+**Type:** Interactive web application
 
-### 2. SAMPLE PAY STUB
+**Features:**
+- Income input field (annual salary)
+- State selector dropdown (focus on `{{STATE_NAME}}` plus 3-4 comparison states)
+- Filing status (Single, Married Filing Jointly)
+- Real-time calculations showing:
+  - Federal income tax (progressive brackets)
+  - State income tax: `{{STATE_INCOME_TAX_RATE}}`
+  - FICA (Social Security + Medicare)
+  - Total tax burden
+  - Net (take-home) income
+- Side-by-side comparison (up to 3 states)
+- Visual chart showing tax breakdown
+- Printable comparison report
 
-**Purpose:** Illustrate real-world tax withholding and calculate net pay
-**Format:** Digital interactive sample that breaks down all deductions
-**Design Notes:** Clearly label all deductions, use annotations to explain each item, allow students to hover over items for explanations
+---
 
-### 3. CASE STUDY COMPARISON WORKSHEET
+### 2. State Tax Comparison Worksheet
+**File:** `State_Tax_Comparison_Worksheet.html`
+**Purpose:** Guided research and comparison of tax structures across states
+**Use:** Chapter worksheet (10-12 minutes)
+**Type:** Interactive + printable worksheet
 
-**Purpose:** Guide analysis of how different state tax structures affect take-home pay
-**Format:** Digital worksheet with calculation spaces and reflection questions
-**Design Notes:** Include side-by-side comparison table for Mia and Liam with clear breakdown of all tax components
+**Sections:**
+- State #1: `{{STATE_NAME}}` (pre-populated data)
+  - Income tax structure
+  - Sales tax rate
+  - Property tax (avg)
+  - Other notable taxes
+- State #2: __________ (student selects and researches)
+- State #3: __________ (student selects and researches)
+- Comparison summary table
+- Analysis questions:
+  - Which state has lowest total tax burden?
+  - How do tax structures differ (progressive vs. flat vs. none)?
+  - What factors besides taxes should influence location decisions?
 
-### 4. SKILL BUILDER ACTIVITY WORKSHEET
+---
 
-**Purpose:** Guide students through tax system analysis for three different scenarios
-**Format:** Digital worksheet with scenario information and response fields
-**Design Notes:** Include definitions of progressive and regressive tax systems at the top, organize scenarios clearly with space for written responses
+### 3. Tax Bracket Visualization Tool
+**File:** `Tax_Bracket_Visualization.html`
+**Purpose:** Interactive visual showing how progressive tax brackets work
+**Use:** Chapter worksheet (8-10 minutes)
+**Type:** Interactive + printable reference
 
-## DAY 2 ASSETS AND UI/UX SPECIFICATIONS FOR BOLT.NEW
+**Features:**
+- Current federal tax brackets displayed visually
+- Income slider to show which brackets apply
+- "Marginal vs. Effective Rate" calculator
+- Visual representation:
+  - Income filled into bracket "buckets"
+  - Each bucket shows tax owed for that portion
+  - Total effective rate calculated
+- Common misconception addressed: "Moving to higher bracket doesn't reduce total income"
+- Printable bracket reference chart
 
-### 1. PODCAST PLAYER
+---
 
-**Purpose:** Deliver review of key concepts from Day 1
-**Inputs:** Pre-recorded audio file
-**Expected Outputs:** Student retention of key concepts
-**Interaction Model:** Standard audio player with play/pause, progress bar
-**Integration Needs:** None
-**Design Notes:** Simple, clean audio player with transcript option
+### 4. State Tax Reference Sheet
+**File:** `State_Tax_Reference_Sheet.html`
+**Purpose:** Quick reference for `{{STATE_NAME}}` complete tax structure
+**Use:** Reference material
+**Type:** Printable 1-page reference
 
-### 2. TAX IMPACT CALCULATOR
+**Content for `{{STATE_NAME}}`:**
+- Income tax: `{{STATE_INCOME_TAX_RATE}}`% or `{{STATE_INCOME_TAX_BRACKETS}}`
+- Sales tax: `{{STATE_SALES_TAX}}`%
+- Property tax: Average rate `{{STATE_PROPERTY_TAX_AVG}}`
+- Other state taxes:
+  - Vehicle registration: `{{STATE_VEHICLE_TAX}}`
+  - Estate/inheritance tax: `{{STATE_ESTATE_TAX}}`
+  - Gas tax: `${{STATE_GAS_TAX}}`/gallon
+- Federal tax brackets (simplified reference)
+- Total tax burden comparison (state rank nationally)
+- Links to `{{STATE_NAME}}` Department of Revenue
+- Neighboring states quick comparison
 
-**Purpose:** Allow students to calculate and compare take-home pay across different tax scenarios
-**Inputs:** User-entered income amount, state selection, filing status
-**Expected Outputs:** Calculated federal, state, and FICA taxes; net income display
-**Interaction Model:** Form inputs (text field for income, dropdown for state selection) with real-time calculation results
-**Integration Needs:** None
-**Design Notes:**
+---
 
-- Clean, intuitive interface with input fields on left, results on right
-- Visual breakdown of tax components using brand colors
-- Option to compare up to three scenarios side-by-side
-- Include "information" icons that provide explanations of calculations when clicked
+## State Variables Used Across All Assets
 
-### 3. STATE TAX COMPARISON RESEARCH TOOL
+- `STATE_NAME`
+- `STATE_CODE`
+- `STATE_INCOME_TAX_RATE` or `STATE_INCOME_TAX_BRACKETS`
+- `STATE_SALES_TAX`
+- `STATE_PROPERTY_TAX_AVG`
+- `STATE_VEHICLE_TAX`
+- `STATE_ESTATE_TAX`
+- `STATE_GAS_TAX`
+- `STATE_REVENUE_DEPT_URL`
+- `STATE_NATIONAL_TAX_RANK` (where state ranks in tax burden)
 
-**Purpose:** Facilitate research and comparison of different state tax structures
-**Inputs:** Student research findings
-**Expected Outputs:** Completed comparison of three different state tax approaches
-**Interaction Model:** Research worksheet with guided prompts and data entry fields
-**Integration Needs:** None
-**Design Notes:**
+## 55-Minute Class Flow
 
-- Three-column layout for side-by-side state comparison
-- Structured fields for income tax, property tax, sales tax, and other taxes
-- Built-in links to reliable tax information sources
-- Save functionality to preserve student work
+**Chapter Resource Usage Suggestions:**
+- 0-5 min: Distribute State Tax Reference Sheet
+- 5-25 min: Direct instruction on federal vs. state taxes, progressive vs. regressive systems
+- 25-45 min: Tax Impact Calculator (interactive activity - pairs)
+- 45-55 min: Debrief and wrap-up
 
-### 4. TAX PLANNING SCENARIO TOOL
+**Additional Activities:**
+- 0-10 min: Review and setup
+- 10-25 min: State Tax Comparison Worksheet (individual)
+- 25-45 min: Tax Bracket Visualization (whole class + reflection)
+- 45-55 min: Discussion and wrap-up
 
-**Purpose:** Apply tax knowledge to a realistic job location decision
-**Inputs:** Income level, potential locations, tax research findings
-**Expected Outputs:** Analysis and recommendation based on tax implications
-**Interaction Model:** Guided scenario analysis with calculation fields and reflection prompts
-**Integration Needs:** Should pull data from Tax Impact Calculator if possible
-**Design Notes:**
+## Implementation Notes
 
-- Step-by-step guided analysis format
-- Split screen showing financial calculations and lifestyle considerations
-- Interactive elements to adjust variables and see impacts
-
-### 5. PORTFOLIO BUILDER: MY TAX STRATEGY
-
-**Purpose:** Synthesize learning into a personal tax planning strategy
-**Inputs:** Student reflections from previous activities, Skill Builder responses from Day 1
-**Expected Outputs:** Completed personal tax strategy document
-**Interaction Model:** Guided reflection with text entry fields, structured template
-**Integration Needs:** Should import student responses from Day 1 Skill Builder activity
-**Design Notes:**
-
-- Professional template design that students can later reference
-- Combination of structured prompts and open reflection areas
-- Option to export as PDF for future reference
-
-## GLOBAL UI/UX CONSIDERATIONS FOR BOLT.NEW
-
-- Use consistent navigation throughout all Day 2 components
-- Implement automatic saving of student work
-- Include progress indicators showing completion status
-- Ensure all components are responsive for different device sizes
-- Maintain visual consistency with brand kit colors and typography
-- Include help/information buttons where additional explanation might be needed
-- Create seamless transitions between activities with clear next/back navigation
+- All HTML files must be self-contained (no external CDN dependencies)
+- Print-friendly CSS required
+- File sizes under 500KB
+- Mobile-responsive design
+- Meets WCAG 2.1 AA accessibility standards
+- PFL Academy color scheme (indigo #6366f1, purple #8b5cf6)
